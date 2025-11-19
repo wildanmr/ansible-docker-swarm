@@ -1,5 +1,6 @@
 - import_playbook: docker-dependencies.yml
 - import_playbook: main.yml
+- import_playbook: masters.yml
 - import_playbook: workers.yml
 - import_playbook: traefik/traefik.yml
 - import_playbook: portainer/portainer.yml

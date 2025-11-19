@@ -1,4 +1,4 @@
-- hosts: main
+- hosts: masters[0]
 
   tasks:
     - name: Get docker group id
@@ -48,7 +48,7 @@
 
 
     - name: Add jenkins label for main node
-      shell: 'docker node update --label-add jenkins.jenkins-data=true {{ main_node }}'
+      shell: 'docker node update --label-add jenkins.jenkins-data=true {{ groups["masters"][0] }}'
 
     - name: Deploy jenkins
       shell: 'docker stack deploy -c jenkins/docker-compose.yml jenkins'

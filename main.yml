@@ -1,5 +1,22 @@
-- hosts: main
+- hosts: masters[0]
   tasks:
     - name: Initialize the cluster using docker swarm
       docker_swarm:
         state: present
+        advertise_addr: "{{ ansible_default_ipv4.address }}"
+
+    - name: Get manager join token
+      shell: 'docker swarm join-token manager -q'
+      register: manager_join_token
+
+    - name: Set manager join token as fact
+      set_fact:
+        manager_token: '{{ manager_join_token.stdout }}'
+
+    - name: Get worker join command
+      shell: 'docker swarm join-token worker | grep join'
+      register: join_command_raw
+
+    - name: Set worker join command as fact
+      set_fact:
+        join_command: '{{ join_command_raw.stdout_lines[0] }}'

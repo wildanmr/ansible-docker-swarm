@@ -1,5 +1,7 @@
 [masters]
-master ansible_host=1.2.3.4
+master1 ansible_host=1.2.3.4
+master2 ansible_host=1.2.3.5
+master3 ansible_host=1.2.3.6
 
 [workers]
 node-1 ansible_host=2.3.4.5

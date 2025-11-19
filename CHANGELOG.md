@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Support for multiple master nodes for high availability configuration
+- A new `masters.yml` playbook to handle additional master nodes joining the swarm
+- High availability documentation in README
+
+### Changed
+- Updated hosts inventory structure to support multiple masters
+- Modified main.yml to initialize swarm with advertise address and capture join tokens
+- Updated workers.yml to properly reference join tokens from the first master
+- Updated service playbooks (traefik, portainer, jenkins) to run on the first master
+- Removed main_node variable from extra-vars.example.yml
+
+### Added
 - A separate `extra-vars.yml` file containing all needed variables to avoid being asked them during installation.
 - A `Makefile` to easily run the needed commands.
 - This changelog file to keep track of changes.

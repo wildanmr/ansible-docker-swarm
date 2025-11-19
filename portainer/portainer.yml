@@ -1,4 +1,4 @@
-- hosts: main
+- hosts: masters[0]
 
   tasks:
     - name: Copy portainer dir
@@ -7,7 +7,7 @@
         dest: .
 
     - name: Add portainer label for main node
-      shell: 'docker node update --label-add portainer.portainer-data=true {{ main_node }}'
+      shell: 'docker node update --label-add portainer.portainer-data=true {{ groups["masters"][0] }}'
 
     - name: Deploy portainer
       shell: 'docker stack deploy -c portainer/docker-compose.yml portainer'

@@ -1,0 +1,7 @@
+- hosts: masters[1:]
+  tasks:
+    - name: Join cluster as manager
+      shell: "docker swarm join --token {{ hostvars[groups['masters'][0]]['manager_token'] }} {{ hostvars[groups['masters'][0]]['ansible_default_ipv4']['address'] }}:2377 >> manager_joined.txt"
+      args:
+        chdir: $HOME
+        creates: manager_joined.txt
