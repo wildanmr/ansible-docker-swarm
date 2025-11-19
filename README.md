@@ -17,8 +17,8 @@ This setup supports multiple master nodes for high availability. The first maste
 First clone this repo to your local machine
 
 ```bash
-git clone https://github.com/rodrigoegimenez/ansible-docker-swarm-cluster.git
-cd ansible-docker-swarm-cluster
+git clone https://github.com/wildanmr/ansible-docker-swarm.git
+cd ansible-docker-swarm
 ```
 
 Then edit the `hosts` file by replacing the IPs of your master servers and replacing/adding as many worker nodes as you wish to join your cluster. Then create an `extra-vars.yml` using the example as a guide.
