@@ -4,7 +4,7 @@
     - name: Copy traefik dir
       synchronize:
         src: .
-        dest: /root/
+        dest: .
 
     - name: Create hashed password
       shell: 'openssl passwd -apr1 {{ traefik_password }}'
@@ -37,4 +37,4 @@
         - EMAIL: '{{ traefik_email }}'
         - DOMAIN: '{{ traefik_domain }}'
       args:
-        chdir: /root
+        chdir: $HOME
