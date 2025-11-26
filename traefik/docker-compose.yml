@@ -2,13 +2,18 @@ version: '3.3'
 
 services:
   traefik:
-    # Use the latest Traefik image
-    image: traefik:v2.4
+    # Latest Traefik v2.xx
+    image: traefik:v2.11
     ports:
       # Listen on port 80, default for HTTP, necessary to redirect to HTTPS
       - 80:80
-      # Listen on port 443, default for HTTPS
+      # Listen on port 443, default for HTTPS      
       - 443:443
+    # Increase file descriptor limits
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     deploy:
       placement:
         constraints:
@@ -54,6 +59,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       # Mount the volume to store the certificates
       - traefik-public-certificates:/certificates
+      # Mount dynamic config directory
+      - /opt/traefik/dynamic:/dynamic:ro
     command:
       # Enable Docker in Traefik, so that it reads labels from Docker services
       - --providers.docker
@@ -63,9 +70,12 @@ services:
       - --providers.docker.exposedbydefault=false
       # Enable Docker Swarm mode
       - --providers.docker.swarmmode
+      # Enable file provider for external services
+      - --providers.file.directory=/dynamic
+      - --providers.file.watch=true
       # Create an entrypoint "http" listening on address 80
       - --entrypoints.http.address=:80
-      # Create an entrypoint "https" listening on address 80
+      # Create an entrypoint "https" listening on address 443
       - --entrypoints.https.address=:443
       # Create the certificate resolver "le" for Let's Encrypt, uses the environment variable EMAIL
       - --certificatesresolvers.le.acme.email=${EMAIL?Variable not set}

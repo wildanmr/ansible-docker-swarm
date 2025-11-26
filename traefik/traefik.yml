@@ -4,7 +4,7 @@
     - name: Copy traefik dir
       synchronize:
         src: .
-        dest: .
+        dest: /root/
 
     - name: Create hashed password
       shell: 'openssl passwd -apr1 {{ traefik_password }}'
@@ -13,6 +13,12 @@
     - name: save hashed password
       set_fact:
         hashed_password: '{{ hashed_password_raw.stdout_lines[0] }}'
+
+    - name: Create dynamic config directory
+      file:
+        path: /opt/traefik/dynamic
+        state: directory
+        mode: '0755'
 
     - name: Add traefik label for main node
       shell: 'docker node update --label-add traefik-public.traefik-public-certificates=true {{ groups["masters"][0] }}'
@@ -31,4 +37,4 @@
         - EMAIL: '{{ traefik_email }}'
         - DOMAIN: '{{ traefik_domain }}'
       args:
-        chdir: $HOME
+        chdir: /root
